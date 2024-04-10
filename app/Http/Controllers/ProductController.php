@@ -34,7 +34,7 @@ class ProductController extends Controller
     }
 
     /**
-     * create
+     * create/add/tambah
      *
      * @return View
      */
@@ -78,7 +78,7 @@ class ProductController extends Controller
     }
 
     /**
-     * show
+     * show/Lihat
      *
      * @param  mixed $id
      * @return View
@@ -94,7 +94,7 @@ class ProductController extends Controller
 
 
     /**
-     * edit
+     * edit/Ubah
      *
      * @param  mixed $id
      * @return View
@@ -109,7 +109,7 @@ class ProductController extends Controller
     }
 
     /**
-     * update
+     * update/Perbarui
      *
      * @param  mixed $request
      * @param  mixed $id
@@ -160,5 +160,26 @@ class ProductController extends Controller
 
         //redirect to index
         return redirect()->route('products.index')->with(['success' => 'Data Berhasil Diubah!']);
+    }
+
+    /**
+     * destroy/Delete/Hapus
+     *
+     * @param  mixed $id
+     * @return RedirectResponse
+     */
+    public function destroy($id): RedirectResponse
+    {
+        //get product by ID
+        $product = Product::findOrFail($id);
+
+        //delete image
+        Storage::delete('public/products/' . $product->image);
+
+        //delete product
+        $product->delete();
+
+        //redirect to index
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }
